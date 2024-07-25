@@ -6,8 +6,8 @@ const {
   getAllUsers,
 } = require("../controllers/authController");
 
-router.route("/signup/verify").post(verifyOtp);
-router.route("/signin/verify").post(verifyLogin);
+router.route("/signup").post(verifyOtp);
+router.route("/login").post(verifyLogin);
 router.route("/users").get(getAllUsers);
 
 module.exports = router;

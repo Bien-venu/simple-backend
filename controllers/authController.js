@@ -26,7 +26,7 @@ const verifyLogin = async (req, res) => {
       });
 
       // Get the user's image and name from the database
-      const { image, firstname, lastname, id, email } = user; // Assuming the User model has fields for image and name.
+      const { image, name, username, id, email } = user; // Assuming the User model has fields for image and name.
 
       res.cookie("jwt", token, { httpOnly: true });
 
@@ -34,8 +34,8 @@ const verifyLogin = async (req, res) => {
       return res.json({
         message: "Login successful!",
         image,
-        firstname,
-        lastname,
+        name,
+        username,
         id,
         email,
       });
@@ -49,10 +49,10 @@ const verifyLogin = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
-  const { firstname, lastname, email, password, image } = req.body;
+  const { name, username, email, password } = req.body;
   try {
     // Simple validation
-    if (!firstname || !lastname || !email || !password) {
+    if (!name || !username || !email || !password) {
       return res.status(400).json({ error: "Please enter all fields." });
     }
 
@@ -67,11 +67,10 @@ const verifyOtp = async (req, res) => {
 
     // Create a new user with the hashed password and image
     const newUser = new User({
-      firstname,
-      lastname,
+      name,
+      username,
       email,
       password: hashedPassword,
-      image,
     });
 
     // Save the user to the database
