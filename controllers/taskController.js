@@ -23,20 +23,11 @@ function sendCheckInMail(data) {
   let mailOptions = {
     from: process.env.NODE_MAILER_USER,
     to: data.email,
-    subject: `${data.name} You've Checked In - InVITe`,
+    subject: `${data.name} You have unread notification on Simple.`,
     html: `Dear ${data.name},<br><br>
-           <strong>Congratulations, you've successfully checked in!</strong><br><br>
-           Name: ${data.name}<br>
-           Registration Number: ${data.regNo}<br>
-           Contact Number: ${data.number}<br><br>
-           If you have any questions or concerns, please don't hesitate to contact us:<br>
-           Anurag Singh: 2002anuragksingh@gmail.com<br>
-           Devanshu Yadav: devanshu.yadav2020@vitbhopal.ac.in<br>
-           Saksham Gupta: saksham.gupta2020@vitbhopal.ac.in<br><br>
-           Lavanya Doohan: lavanya.doohan2020@vitbhopal.ac.in<br><br>
-           Thank you for choosing InVITe!<br><br>
-           Best regards,<br>
-           The InVITe Team`,
+           <strong>Congratulations, you've assigned the issue!</strong><br><br>
+           Click the button to check you task!<br><br>
+           <button>Open Your Inbox</button><br>`,
   };
 
   transporter.sendMail(mailOptions, function (err, success) {
@@ -50,13 +41,16 @@ function sendCheckInMail(data) {
 
 const posttask = async (req, res) => {
   const Name = req.body.name;
-  const Venue = req.body.venue;
+  const Team = req.body.team;
+  const Task = req.body.task;
+  const Status = req.body.status;
+  const Priority = req.body.priority;
+  const Labels = req.body.labels;
+  const Message = req.body.message;
+  const Assigner = req.body.assigner;
+  const Worker = req.body.worker;
   const Date = req.body.date;
-  const Time = req.body.time;
-  const Desc = req.body.description;
-  const Price = req.body.price;
-  const Profile = req.body.profile;
-  const Organizer = req.body.organizer;
+  const Activities = req.body.activities;
 
   const secret = JWT_SECRET;
   const payload = {
@@ -68,13 +62,16 @@ const posttask = async (req, res) => {
   const new_task = new task({
     task_id: token,
     name: Name,
-    venue: Venue,
+    team: Team,
+    task: Task,
+    status: Status,
+    priority: Priority,
+    labels: Labels,
+    message: Message,
+    assigner: Assigner,
+    worker: Worker,
     date: Date,
-    time: Time,
-    description: Desc,
-    price: Price,
-    profile: Profile,
-    organizer: Organizer,
+    activities: Activities,
   });
 
   try {
@@ -136,13 +133,16 @@ const updatetask = async (req, res) => {
   const taskId = req.body.task_id;
   const updatedtaskData = {
     name: req.body.name,
-    venue: req.body.venue,
+    team: req.body.team,
+    task: req.body.task,
+    status: req.body.status,
+    priority: req.body.priority,
+    labels: req.body.labels,
+    message: req.body.message,
+    assigner: req.body.assigner,
+    worker: req.body.worker,
     date: req.body.date,
-    time: req.body.time,
-    description: req.body.description,
-    price: req.body.price,
-    profile: req.body.profile,
-    organizer: req.body.organizer,
+    activities: req.body.activities,
   };
 
   try {

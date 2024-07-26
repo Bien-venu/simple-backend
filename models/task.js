@@ -1,42 +1,48 @@
 const mongoose = require("mongoose");
 
+const activitySchema = new mongoose.Schema({
+  icon: { type: String, required: true },
+  creator: { type: String, required: true },
+  message: { type: String, required: true },
+  date: { type: Date, required: true },
+});
+
 const taskSchema = new mongoose.Schema(
   {
     task_id: {
       type: String,
-      requird: true,
     },
     name: {
       type: String,
     },
-    venue: {
+    team: {
+      type: String,
+    },
+    task: {
+      type: String,
+    },
+    status: {
+      type: String,
+    },
+    priority: {
+      type: String,
+    },
+    labels: {
+      type: String,
+    },
+    message: {
+      type: String,
+    },
+    assigner: {
+      type: String,
+    },
+    worker: {
       type: String,
     },
     date: {
       type: String,
     },
-    time: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    price: {
-      type: Number,
-    },
-    profile: {
-      type: String,
-    },
-    organizer: {
-      type: String,
-    },
-    participants: [],
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
-      },
-    ],
+    activities: [activitySchema],
   },
   { timestamps: true }
 );
