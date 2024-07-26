@@ -38,8 +38,8 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/", paymentRouter);
-app.use("/user", userRouter);
-app.use("/user", dashboardRouter);
+app.use("/", userRouter);
+app.use("/", dashboardRouter);
 
 app.use("/", taskRouter);
 app.use(like);

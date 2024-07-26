@@ -4,7 +4,7 @@
   "description": "invite",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "build": "nodemon index.js"
   },
   "author": "inVITe",
@@ -22,6 +22,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
     "otp-generator": "^4.0.1",
+    "punycode": "^2.3.1",
     "querystring": "^0.2.1",
     "stripe": "^11.12.0",
     "util": "^0.12.5",
