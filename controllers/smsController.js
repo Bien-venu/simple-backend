@@ -45,7 +45,7 @@ function sendTicket(Details) {
   let mailOptions = {
     from: process.env.NODE_MAILER_USER,
     to: Details.email,
-    subject: `Your Online task Pass for ${Details.task_name} - InVITe✨`,
+    subject: `Your Online task Pass for ${Details.task_name} - `,
     html: `Dear <i>${Details.name}</i>,<br><br>Thank you for registering for ${Details.task_name}! We are excited to have you join us and want to make sure that you have all the information you need to have a great time.<br><br>Your online pass has been generated and is ready for you to use. Please remember to keep this pass with you at all times during the task and do not share it with anyone else.<br><br><strong>Pass Number: ${Details.pass}</strong><br><br>Here are the details of your registration:<br>Name: ${Details.name}<br>Amount Paid: ${Details.price}<br>Address: ${Details.address1} <br> City: ${Details.city} <br> PinCode: ${Details.zip}<br><br>If you have any questions or concerns, please don't hesitate to reach out to us. We're here to help please contact us at:<br>Anurag Singh: 2002anuragksingh@gmail.com<br>Devanshu Yadav: devanshu.yadav2020@vitbhopal.ac.in<br>Saksham Gupta: saksham.gupta2020@vitbhopal.ac.in<br>Lavanya Doohan: lavanya.doohan2020@vitbhopal.ac.in<br><br>Best regards,<br>The InVITe Team`,
   };
 

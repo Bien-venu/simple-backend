@@ -14,19 +14,18 @@ function sendCheckInMail(data) {
     auth: {
       user: process.env.NODE_MAILER_USER,
       pass: process.env.NODE_MAILER_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
+    }
   });
+
+  console.log(process.env.NODE_MAILER_USER, process.env.NODE_MAILER_PASS);
 
   let mailOptions = {
     from: process.env.NODE_MAILER_USER,
-    to: data.email,
-    subject: `${data.name} You have unread notification on Simple.`,
+    to: data.worker,
+    subject: `${data.name}, you have an unread notification on Simple.`,
     html: `Dear ${data.name},<br><br>
-           <strong>Congratulations, you've assigned the issue!</strong><br><br>
-           Click the button to check you task!<br><br>
+           <strong>Congratulations, you've been assigned a new task!</strong><br><br>
+           Click the button to check your task!<br><br>
            <button>Open Your Inbox</button><br>`,
   };
 
@@ -34,56 +33,76 @@ function sendCheckInMail(data) {
     if (err) {
       console.log(err);
     } else {
-      console.log("Checked In Email sent successfully");
+      console.log("Check-in Email sent successfully");
     }
   });
 }
 
 const posttask = async (req, res) => {
-  const Name = req.body.name;
-  const Team = req.body.team;
-  const Task = req.body.task;
-  const Status = req.body.status;
-  const Priority = req.body.priority;
-  const Labels = req.body.labels;
-  const Message = req.body.message;
-  const Assigner = req.body.assigner;
-  const Worker = req.body.worker;
-  const Date = req.body.date;
-  const Activities = req.body.activities;
+  const {
+    name,
+    team,
+    task: taskDesc,
+    status,
+    priority,
+    labels,
+    message,
+    assigner,
+    worker,
+    date,
+    activities,
+  } = req.body;
 
   const secret = JWT_SECRET;
-  const payload = {
-    email: Name,
-  };
+  const payload = { email: name };
 
   const token = await jwt.sign(payload, secret);
 
   const new_task = new task({
     task_id: token,
-    name: Name,
-    team: Team,
-    task: Task,
-    status: Status,
-    priority: Priority,
-    labels: Labels,
-    message: Message,
-    assigner: Assigner,
-    worker: Worker,
-    date: Date,
-    activities: Activities,
+    name,
+    team,
+    task: taskDesc,
+    status,
+    priority,
+    labels,
+    message,
+    assigner,
+    worker,
+    date,
+    activities,
   });
 
   try {
-    new_task.save((error, success) => {
-      if (error) console.log(error);
-      else console.log("Saved::New task::created.");
+    new_task.save(async (error, success) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send({ msg: "Error saving task", error });
+      } else {
+        console.log("Saved::New task::created.");
+
+        // Fetch worker's email and send check-in email
+        try {
+          const workerData = await User.findOne({ email: worker });
+          if (workerData) {
+            const data = {
+              name: workerData.username,
+              email: workerData.email,
+            };
+          } else {
+            console.log("Worker not found.");
+          }
+        } catch (err) {
+          console.log("Error fetching worker data:", err);
+        }
+
+        res.status(200).send({ msg: "task created", task_id: token });
+      }
     });
   } catch (err) {
     console.log(err);
+    res.status(500).send({ msg: "Error creating task", error: err });
   }
-
-  res.status(200).send({ msg: "task created", task_id: token });
 };
 
 const alltasks = async (req, res) => {
