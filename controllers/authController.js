@@ -67,7 +67,7 @@ const verifyOtp = async (req, res) => {
     const existingUserByUsername = await User.findOne({ username });
     console.log(existingUserByEmail);
     if (existingUserByUsername) {
-      return res.status(401).json({ error: "Username is already taken." });
+      return res.status(403).json({ error: "Username is already taken." });
     }
 
     // Hash the password before saving it
