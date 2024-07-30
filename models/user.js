@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema({
   resetTokenExpiration: Date,
   user_token: {
     type: String,
-    default: uuid.v4, // Generate a unique token using uuid
+    default: uuid.v4,
     unique: true,
   },
 });
