@@ -57,9 +57,15 @@ const verifyOtp = async (req, res) => {
     }
 
     // Check if the email is already registered
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingUserByEmail = await User.findOne({ email });
+    if (existingUserByEmail) {
       return res.status(401).json({ error: "Email is already registered." });
+    }
+
+    // Check if the username is already taken
+    const existingUserByUsername = await User.findOne({ username });
+    if (existingUserByUsername) {
+      return res.status(402).json({ error: "Username is already taken." });
     }
 
     // Hash the password before saving it
@@ -82,6 +88,7 @@ const verifyOtp = async (req, res) => {
     console.error(error);
   }
 };
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
